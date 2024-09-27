@@ -51,14 +51,12 @@ Note: I use Polars instead of Pandas for data analytics in Python. It is much mo
 
 Effect of Treatment = E( P = 1| T = 1) — E( P = 1 | T = 0)
 
-**Logistic Regression **
+**Logistic Regression**
 
 lr = (Placement ~ c + age + score + gender + experience + previous_exp + distance_majorcity + owns_motor+treatment)
 
 **Uplift Model**
 
 (Placement ~ c + age + score + gender + experience + previous_exp + distance_majorcity + owns_motor|treatment=1) 
-
-                                                  -
-
+                                          -
 (Placement ~ c + age + score + gender + experience + previous_exp + distance_majorcity + owns_motor|treatment=0)
