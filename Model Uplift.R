@@ -96,25 +96,25 @@ uplift <- df %>%
     control_placement = sum(as.integer(as.character(placement)) * (1 - treatment))  # Only for control
   )
 
-uplift_cummulative <-uplift
+uplift_cumulative <-uplift
 
-uplift_cummulative $cum_treatmentnumber <- cumsum(uplift_cummulative$treatment_n)
-uplift_cummulative$cum_treatmentplacement <- cumsum(uplift_cummulative$treatment_placement)
-uplift_cummulative$cum_controlplacement <- cumsum(uplift_cummulative$control_placement)
-uplift_cummulative$cum_controlnumber <- cumsum(uplift_cummulative$control_n)
+uplift_cumulative $cum_treatmentnumber <- cumsum(uplift_cumulative$treatment_n)
+uplift_cumulative$cum_treatmentplacement <- cumsum(uplift_cumulative$treatment_placement)
+uplift_cumulative$cum_controlplacement <- cumsum(uplift_cumulative$control_placement)
+uplift_cumulative$cum_controlnumber <- cumsum(uplift_cumulative$control_n)
 
-uplift_cummulative <- uplift_cummulative%>%
+uplift_cummulative <- uplift_cumulative%>%
   select(decile, cum_treatmentnumber, cum_treatmentplacement, cum_controlplacement, cum_controlnumber)
 
 
-uplift_cummulative$incremental <- uplift_cummulative$cum_treatmentplacement - (uplift_cummulative$cum_controlplacement/uplift_cummulative$cum_controlnumber) * uplift_cummulative$cum_treatmentnumber
-uplift_cummulative$incrementUplift <- round(uplift_cummulative$incremental / sum(uplift_cummulative$cum_controlnumber)*100,2)
+uplift_cumulative$incremental <- uplift_cumulative$cum_treatmentplacement - (uplift_cumulative$cum_controlplacement/uplift_cumulative$cum_controlnumber) * uplift_cumulative$cum_treatmentnumber
+uplift_cumulative$incrementUplift <- round(uplift_cumulative$incremental / sum(uplift_cumulative$cum_controlnumber)*100,2)
 
 a_plot <- ggplot() +
-  geom_line(uplift_cummulative, mapping=aes(x=decile, y=incrementUplift), color='blue') +
-  geom_point(uplift_cummulative, mapping=aes(x=decile, y=incrementUplift), color='darkblue') +
-  geom_line(uplift_cummulative, mapping=aes(x=decile, y=incrementUplift), color='blue') +
-  geom_line(aes(x=c(1, 10), y = c(first(uplift_cummulative$incrementUplift), last(uplift_cummulative$incrementUplift))), 
+  geom_line(uplift_cumulative, mapping=aes(x=decile, y=incrementUplift), color='blue') +
+  geom_point(uplift_cumulative, mapping=aes(x=decile, y=incrementUplift), color='darkblue') +
+  geom_line(uplift_cumulative, mapping=aes(x=decile, y=incrementUplift), color='blue') +
+  geom_line(aes(x=c(1, 10), y = c(first(uplift_cumulative$incrementUplift), last(uplift_cumulative$incrementUplift))), 
             linetype="dashed", color='green') +
   labs(title = "Incremental Uplift by Decile",
        x = "Decile",
